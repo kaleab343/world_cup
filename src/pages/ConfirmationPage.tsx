@@ -1,22 +1,27 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Languages } from "lucide-react";
 import { getBets } from "@/lib/bets";
 import { flagUrl } from "@/data/countries";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getTranslation, formatCurrency } from "@/lib/i18n";
 
 const ConfirmationPage = () => {
   const { id = "" } = useParams();
   const bet = useMemo(() => getBets().find((b) => b.id === id), [id]);
-  const [confettiPieces] = useState(() =>
+  const { language, setLanguage } = useLanguage();
+  const t = (key: any) => getTranslation(language, key);
+  
+  const confettiPieces = useMemo(() => 
     Array.from({ length: 60 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       delay: Math.random() * 0.5,
       duration: 2 + Math.random() * 2,
       hue: Math.random() > 0.5 ? 45 : 0,
-    }))
+    })), []
   );
 
   useEffect(() => {
@@ -27,6 +32,19 @@ const ConfirmationPage = () => {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6 py-16">
+      {/* Language Toggle */}
+      <div className="absolute right-4 top-4 z-20 sm:right-6 sm:top-6">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setLanguage(language === 'en' ? 'am' : 'en')}
+          className="gap-2 border-gold/30 bg-background/60 backdrop-blur"
+        >
+          <Languages className="h-4 w-4" />
+          {language === 'en' ? 'አማርኛ' : 'English'}
+        </Button>
+      </div>
+
       <img
         src={flagUrl(bet.countryCode, "w1280")}
         alt=""
@@ -68,30 +86,30 @@ const ConfirmationPage = () => {
           <Check className="h-10 w-10 text-primary-foreground" strokeWidth={3} />
         </motion.div>
 
-        <p className="mt-6 font-mono text-xs uppercase tracking-[0.3em] text-gold">Bet confirmed</p>
+        <p className="mt-6 font-mono text-xs uppercase tracking-[0.3em] text-gold">{t('betConfirmed')}</p>
         <h1 className="font-display mt-3 text-5xl leading-none sm:text-7xl">
           {bet.countryName.toUpperCase()}
         </h1>
         <p className="mt-4 font-editorial text-base text-muted-foreground sm:text-lg">
-          Your bet is placed. Now sit back and watch the magic happen.
+          {t('betPlaced')}
         </p>
 
         <div className="mt-10 grid grid-cols-3 gap-4 border-y border-border/60 py-6 text-left">
-          <Field label="Stake" value={`€${bet.amount.toLocaleString()}`} />
-          <Field label="Odds" value={`${bet.odds.toFixed(2)}x`} />
-          <Field label="Payout" value={`€${bet.payout.toLocaleString()}`} highlight />
+          <Field label={t('stake')} value={formatCurrency(bet.amount, language)} />
+          <Field label={t('odds')} value={`${bet.odds.toFixed(2)}x`} />
+          <Field label={t('payout')} value={formatCurrency(bet.payout, language)} highlight />
         </div>
 
         <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-          Expected payout date · <span className="text-gold">{bet.payoutDate}</span>
+          {t('expectedPayoutDate')} · <span className="text-gold">{bet.payoutDate}</span>
         </p>
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Button asChild size="lg" className="bg-gradient-gold font-editorial uppercase tracking-wider text-primary-foreground hover:opacity-90">
-            <Link to="/">Bet on Another Country</Link>
+            <Link to="/">{t('betOnAnother')}</Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="font-editorial uppercase tracking-wider">
-            <Link to="/my-bets">View My Bets</Link>
+            <Link to="/my-bets">{t('viewMyBets')}</Link>
           </Button>
         </div>
       </motion.div>
@@ -102,7 +120,7 @@ const ConfirmationPage = () => {
 const Field = ({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) => (
   <div>
     <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">{label}</p>
-    <p className={`font-display mt-2 text-3xl ${highlight ? "bg-gradient-gold bg-clip-text text-transparent" : ""}`}>
+    <p className={`font-display mt-2 text-3xl ${highlight ? "text-gold" : ""}`}>
       {value}
     </p>
   </div>
