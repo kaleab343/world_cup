@@ -3,11 +3,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import AdminLayout from "./components/AdminLayout";
-import DashboardPage from "./pages/DashboardPage";
-import GamesPage from "./pages/GamesPage";
-import WithdrawalsPage from "./pages/WithdrawalsPage";
-import RoomsPage from "./pages/RoomsPage";
+import HomePage from "./pages/HomePage";
+import CountryPage from "./pages/CountryPage";
+import ConfirmationPage from "./pages/ConfirmationPage";
+import MyBetsPage from "./pages/MyBetsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -19,12 +18,10 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route element={<AdminLayout />}>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/games" element={<GamesPage />} />
-            <Route path="/withdrawals" element={<WithdrawalsPage />} />
-            <Route path="/rooms" element={<RoomsPage />} />
-          </Route>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/country/:code" element={<CountryPage />} />
+          <Route path="/confirmation/:id" element={<ConfirmationPage />} />
+          <Route path="/my-bets" element={<MyBetsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
