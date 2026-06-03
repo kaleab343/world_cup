@@ -12,8 +12,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Bebas Neue"', 'sans-serif'],
+        editorial: ['Syne', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
