@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowLeft, Upload, Copy, Check, MessageCircle, Languages, QrCode, Camera } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, Upload, Copy, Check, MessageCircle, Languages, QrCode, Camera, X } from "lucide-react";
 import { getBets } from "@/lib/bets";
 import { flagUrl } from "@/data/countries";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,7 @@ const PaymentPage = () => {
   const [screenshot, setScreenshot] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [copied, setCopied] = useState(false);
+  const [showQRModal, setShowQRModal] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -74,7 +75,6 @@ const PaymentPage = () => {
     }
 
     try {
-      // Create FormData for file upload
       const formData = new FormData();
       formData.append('phoneNumber', phoneNumber);
       formData.append('betId', bet.id);
@@ -83,13 +83,11 @@ const PaymentPage = () => {
       formData.append('payout', bet.payout.toString());
       formData.append('screenshot', screenshot);
 
-      // Show loading toast
       toast({
         title: language === 'am' ? 'በመላክ ላይ...' : 'Submitting...',
         description: language === 'am' ? 'እባክዎ ይጠብቁ' : 'Please wait',
       });
 
-      // Send to backend
       const response = await fetch(API_ENDPOINT, {
         method: 'POST',
         body: formData,
@@ -98,16 +96,15 @@ const PaymentPage = () => {
       const result = await response.json();
 
       if (result.success) {
+        // Show QR modal instead of navigating
+        setShowQRModal(true);
+        
         toast({
           title: language === 'am' ? 'ክፍያ ተልኳል!' : 'Payment Submitted!',
           description: language === 'am' 
-            ? 'ክፍያዎ እየተረጋገጠ ነው። በቴሌግራም ድጋፍ ቡድን ይቀላቀሉ।'
-            : 'Your payment is being verified. Join our Telegram support group.',
+            ? 'የQR ኮድ በስክሪንሾት ያድርጉ እና ክፍያውን ይክፈሉ'
+            : 'Screenshot the QR code and complete your payment',
         });
-
-        setTimeout(() => {
-          navigate(`/confirmation/${bet.id}`);
-        }, 2000);
       } else {
         throw new Error(result.message || 'Failed to submit payment');
       }
@@ -118,6 +115,11 @@ const PaymentPage = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleCloseQR = () => {
+    setShowQRModal(false);
+    navigate(`/confirmation/${bet.id}`);
   };
 
   return (
@@ -181,52 +183,6 @@ const PaymentPage = () => {
                 {language === 'am' ? 'የክፍያ መጠን' : 'Amount to Pay'}
               </span>
               <span className="font-display text-4xl text-gold">{formatCurrency(bet.amount, language)}</span>
-            </div>
-          </div>
-
-          {/* QR Code Section - NEW */}
-          <div className="rounded-xl border border-gold/30 bg-gradient-to-r from-gold/10 to-transparent p-6">
-            <div className="flex items-center gap-3 text-gold mb-4">
-              <QrCode className="h-6 w-6" />
-              <h3 className="font-display text-xl">
-                {language === 'am' ? 'QR ኮድ ይጠቀሙ' : 'Use QR Code'}
-              </h3>
-            </div>
-            
-            <div className="bg-white p-6 rounded-lg flex flex-col items-center">
-              <QRCodeSVG 
-                value={TELEBIRR_NUMBER}
-                size={200}
-                level="H"
-                includeMargin={true}
-              />
-              <p className="mt-4 text-center font-display text-sm text-black">
-                {TELEBIRR_NUMBER}
-              </p>
-              <p className="mt-2 text-center font-display text-2xl text-black font-bold">
-                {formatCurrency(bet.amount, language)}
-              </p>
-            </div>
-
-            <div className="mt-4 rounded-lg border border-gold/30 bg-gold/5 p-4">
-              <div className="flex items-start gap-3">
-                <Camera className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
-                <div className="space-y-2">
-                  <p className="font-editorial text-sm font-bold text-gold">
-                    {language === 'am' ? '⚠️ አስፈላጊ መመሪያዎች:' : '⚠️ Important Instructions:'}
-                  </p>
-                  <ol className="space-y-1 font-editorial text-sm text-muted-foreground list-decimal list-inside">
-                    <li>{language === 'am' ? 'ይህንን QR ኮድ በስልክዎ ያስቀምጡ' : 'Screenshot this QR code on your phone'}</li>
-                    <li>{language === 'am' ? 'ቴሌብር አፕ ይክፈቱ' : 'Open TeleBirr app'}</li>
-                    <li>{language === 'am' ? '"ገንዘብ ላክ" ይምረጡ' : 'Select "Send Money"'}</li>
-                    <li>{language === 'am' ? 'QR ስካን ይምረጡ' : 'Choose "Scan QR"'}</li>
-                    <li>{language === 'am' ? 'የተቀመጠውን QR ኮድ ያስቀምጡ' : 'Upload the saved QR screenshot'}</li>
-                    <li>{language === 'am' ? 'ክፍያውን ያረጋግጡ' : 'Confirm the payment'}</li>
-                    <li>{language === 'am' ? 'የማረጋገጫ ስክሪንሾት ያድርጉ' : 'Take screenshot of confirmation'}</li>
-                    <li>{language === 'am' ? 'ከዚህ በታች ያስገቡ' : 'Upload it below'}</li>
-                  </ol>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -363,6 +319,84 @@ const PaymentPage = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* QR Code Modal - Shows AFTER successful submission */}
+      <AnimatePresence>
+        {showQRModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+            onClick={handleCloseQR}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-md rounded-2xl border border-gold/30 bg-card p-8"
+            >
+              <Button
+                onClick={handleCloseQR}
+                variant="ghost"
+                size="icon"
+                className="absolute right-4 top-4"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-3 text-gold mb-6">
+                  <QrCode className="h-8 w-8" />
+                  <h2 className="font-display text-3xl">
+                    {language === 'am' ? 'QR ኮድ' : 'QR CODE'}
+                  </h2>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg">
+                  <QRCodeSVG 
+                    value={TELEBIRR_NUMBER}
+                    size={256}
+                    level="H"
+                    includeMargin={true}
+                  />
+                  <p className="mt-4 text-center font-display text-sm text-black">
+                    {TELEBIRR_NUMBER}
+                  </p>
+                  <p className="mt-2 text-center font-display text-3xl text-black font-bold">
+                    {formatCurrency(bet.amount, language)}
+                  </p>
+                </div>
+
+                <div className="mt-6 rounded-lg border border-gold/30 bg-gold/5 p-4">
+                  <div className="flex items-start gap-3">
+                    <Camera className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
+                    <div className="space-y-2 text-left">
+                      <p className="font-editorial text-sm font-bold text-gold">
+                        {language === 'am' ? '⚠️ አስፈላጊ:' : '⚠️ Important:'}
+                      </p>
+                      <ol className="space-y-1 font-editorial text-sm text-muted-foreground list-decimal list-inside">
+                        <li>{language === 'am' ? 'ይህንን QR በስክሪንሾት ያድርጉ' : 'Screenshot this QR code'}</li>
+                        <li>{language === 'am' ? 'ቴሌብር አፕ ይክፈቱ' : 'Open TeleBirr app'}</li>
+                        <li>{language === 'am' ? 'QR ስካን ይምረጡ' : 'Select Scan QR'}</li>
+                        <li>{language === 'am' ? 'ክፍያውን ይክፈሉ' : 'Complete payment'}</li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  onClick={handleCloseQR}
+                  className="mt-6 w-full bg-gradient-gold font-editorial uppercase tracking-wider text-primary-foreground hover:opacity-90"
+                >
+                  {language === 'am' ? 'ተረድቻል' : 'Got It'}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
