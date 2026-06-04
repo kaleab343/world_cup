@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "test-bot": "node test-bot.js",
+    "setup-menu": "node setup-bot-menu.js",
+    "set-webhook": "node set-webhook.js"
   },
   "dependencies": {
     "express": "^4.18.2",
