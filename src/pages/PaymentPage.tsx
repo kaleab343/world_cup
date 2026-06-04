@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Upload, Copy, Check, MessageCircle, Languages } from "lucide-react";
+import { ArrowLeft, Upload, Copy, Check, MessageCircle, Languages, QrCode, Camera } from "lucide-react";
 import { getBets } from "@/lib/bets";
 import { flagUrl } from "@/data/countries";
 import { Button } from "@/components/ui/button";
@@ -10,10 +10,11 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getTranslation, formatCurrency } from "@/lib/i18n";
+import { QRCodeSVG } from 'qrcode.react';
 
 const TELEBIRR_NUMBER = "+251912345678"; // Replace with actual TeleBirr number
 const TELEGRAM_SUPPORT = "https://t.me/worldcup2026support"; // Replace with actual Telegram group
-const API_ENDPOINT = "http://localhost/backend/submit-payment.php"; // Update with your backend URL
+const API_ENDPOINT = "https://creative-residence-jockstrap.ngrok-free.dev/backend/submit-payment.php";
 
 const PaymentPage = () => {
   const { id = "" } = useParams();
@@ -180,6 +181,52 @@ const PaymentPage = () => {
                 {language === 'am' ? 'የክፍያ መጠን' : 'Amount to Pay'}
               </span>
               <span className="font-display text-4xl text-gold">{formatCurrency(bet.amount, language)}</span>
+            </div>
+          </div>
+
+          {/* QR Code Section - NEW */}
+          <div className="rounded-xl border border-gold/30 bg-gradient-to-r from-gold/10 to-transparent p-6">
+            <div className="flex items-center gap-3 text-gold mb-4">
+              <QrCode className="h-6 w-6" />
+              <h3 className="font-display text-xl">
+                {language === 'am' ? 'QR ኮድ ይጠቀሙ' : 'Use QR Code'}
+              </h3>
+            </div>
+            
+            <div className="bg-white p-6 rounded-lg flex flex-col items-center">
+              <QRCodeSVG 
+                value={TELEBIRR_NUMBER}
+                size={200}
+                level="H"
+                includeMargin={true}
+              />
+              <p className="mt-4 text-center font-display text-sm text-black">
+                {TELEBIRR_NUMBER}
+              </p>
+              <p className="mt-2 text-center font-display text-2xl text-black font-bold">
+                {formatCurrency(bet.amount, language)}
+              </p>
+            </div>
+
+            <div className="mt-4 rounded-lg border border-gold/30 bg-gold/5 p-4">
+              <div className="flex items-start gap-3">
+                <Camera className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
+                <div className="space-y-2">
+                  <p className="font-editorial text-sm font-bold text-gold">
+                    {language === 'am' ? '⚠️ አስፈላጊ መመሪያዎች:' : '⚠️ Important Instructions:'}
+                  </p>
+                  <ol className="space-y-1 font-editorial text-sm text-muted-foreground list-decimal list-inside">
+                    <li>{language === 'am' ? 'ይህንን QR ኮድ በስልክዎ ያስቀምጡ' : 'Screenshot this QR code on your phone'}</li>
+                    <li>{language === 'am' ? 'ቴሌብር አፕ ይክፈቱ' : 'Open TeleBirr app'}</li>
+                    <li>{language === 'am' ? '"ገንዘብ ላክ" ይምረጡ' : 'Select "Send Money"'}</li>
+                    <li>{language === 'am' ? 'QR ስካን ይምረጡ' : 'Choose "Scan QR"'}</li>
+                    <li>{language === 'am' ? 'የተቀመጠውን QR ኮድ ያስቀምጡ' : 'Upload the saved QR screenshot'}</li>
+                    <li>{language === 'am' ? 'ክፍያውን ያረጋግጡ' : 'Confirm the payment'}</li>
+                    <li>{language === 'am' ? 'የማረጋገጫ ስክሪንሾት ያድርጉ' : 'Take screenshot of confirmation'}</li>
+                    <li>{language === 'am' ? 'ከዚህ በታች ያስገቡ' : 'Upload it below'}</li>
+                  </ol>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -57,6 +57,11 @@ export const translations = {
     mobileWallet: 'Mobile Wallet',
     requestWithdrawal: 'Request Withdrawal',
     
+    // QR Code
+    useQR: 'Use QR Code',
+    qrInstructions: 'Important Instructions:',
+    screenshotQR: 'Screenshot this QR code on your phone',
+    
     // Currency
     currency: 'ETB',
     currencySymbol: 'Br',
@@ -116,6 +121,11 @@ export const translations = {
     bankAccount: 'የባንክ ሂሳብ',
     mobileWallet: 'ሞባይል ዋሌት',
     requestWithdrawal: 'መውጣት ይጠይቁ',
+    
+    // QR Code
+    useQR: 'QR ኮድ ይጠቀሙ',
+    qrInstructions: 'አስፈላጊ መመሪያዎች:',
+    screenshotQR: 'ይህንን QR ኮድ በስልክዎ ያስቀምጡ',
     
     // Currency
     currency: 'ብር',
