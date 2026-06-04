@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import HomePage from "./pages/HomePage";
 import CountryPage from "./pages/CountryPage";
+import PaymentPage from "./pages/PaymentPage";
 import ConfirmationPage from "./pages/ConfirmationPage";
 import MyBetsPage from "./pages/MyBetsPage";
 import NotFound from "./pages/NotFound";
@@ -22,6 +23,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/country/:code" element={<CountryPage />} />
+            <Route path="/payment/:id" element={<PaymentPage />} />
             <Route path="/confirmation/:id" element={<ConfirmationPage />} />
             <Route path="/my-bets" element={<MyBetsPage />} />
             <Route path="*" element={<NotFound />} />

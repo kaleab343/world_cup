@@ -55,29 +55,19 @@ const HomePage = () => {
         ))}
       </div>
 
-      {/* Vignette + floodlight */}
+      {/* Vignette */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
-      <div className="absolute inset-0 bg-floodlight" />
 
       {/* Hero */}
       <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-20 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.7 }}
-          className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-background/60 px-4 py-1.5 text-xs uppercase tracking-[0.3em] text-gold backdrop-blur"
-        >
-          <Trophy className="h-3.5 w-3.5" /> {t('worldCup')}
-        </motion.div>
-
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.9 }}
-          className="font-display mt-6 text-[clamp(3.5rem,12vw,11rem)] leading-[0.85] tracking-tight"
+          className="font-display text-[clamp(3.5rem,12vw,11rem)] leading-[0.85] tracking-tight"
         >
           {t('whoWillWin')} <br />
-          <span className="bg-gradient-gold bg-clip-text text-transparent">{t('winItAll')}</span>
+          <span className="text-gold">{t('winItAll')}</span>
         </motion.h1>
 
         <motion.p

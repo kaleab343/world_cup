@@ -25,7 +25,7 @@ const CountryPage = () => {
 
   const handlePlace = () => {
     const bet = placeBet(country.code, amount);
-    navigate(`/confirmation/${bet.id}`);
+    navigate(`/payment/${bet.id}`);
   };
 
   return (
