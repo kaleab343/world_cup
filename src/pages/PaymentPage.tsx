@@ -14,7 +14,7 @@ import { QRCodeSVG } from 'qrcode.react';
 
 const TELEBIRR_NUMBER = "+251912345678"; // Replace with actual TeleBirr number
 const TELEGRAM_SUPPORT = "https://t.me/worldcup2026support"; // Replace with actual Telegram group
-const API_ENDPOINT = "https://creative-residence-jockstrap.ngrok-free.dev/backend/submit-payment.php";
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT + "/submit-payment.php";
 
 const PaymentPage = () => {
   const { id = "" } = useParams();
