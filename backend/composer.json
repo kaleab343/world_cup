@@ -1,8 +1,0 @@
-{
-  "name": "worldcup/backend",
-  "description": "World Cup Betting Backend API",
-  "type": "project",
-  "require": {
-    "php": ">=7.4"
-  }
-}

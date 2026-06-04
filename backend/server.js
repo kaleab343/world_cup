@@ -1,0 +1,319 @@
+const express = require('express');
+const cors = require('cors');
+const multer = require('multer');
+const fetch = require('node-fetch');
+const FormData = require('form-data');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Configuration
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8630430801:AAEXDFGSFc3L2HNefbfHuf43gFk1-ewXQxY';
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '500761652';
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ 
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
+
+// Helper function to send to Telegram
+async function sendToTelegram(phoneNumber, betId, countryName, amount, payout, screenshotBuffer, filename) {
+    try {
+        const formData = new FormData();
+        
+        // Add the photo
+        formData.append('photo', screenshotBuffer, {
+            filename: filename,
+            contentType: 'image/jpeg'
+        });
+        
+        formData.append('chat_id', TELEGRAM_CHAT_ID);
+        
+        // Add caption with bet details
+        const caption = `🎯 New Bet Placed!\n\n` +
+                       `📱 Phone: ${phoneNumber}\n` +
+                       `🆔 Bet ID: ${betId}\n` +
+                       `⚽ Country: ${countryName}\n` +
+                       `💰 Amount: ${amount} Birr\n` +
+                       `🏆 Potential Payout: ${payout} Birr`;
+        
+        formData.append('caption', caption);
+        
+        const response = await fetch(
+            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`,
+            {
+                method: 'POST',
+                body: formData
+            }
+        );
+        
+        const result = await response.json();
+        return result;
+        
+    } catch (error) {
+        console.error('Error sending to Telegram:', error);
+        throw error;
+    }
+}
+
+// Routes
+
+// Health check
+app.get('/', (req, res) => {
+    res.json({ 
+        status: 'ok', 
+        message: 'World Cup Backend API',
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Test bot connection
+app.get('/test-bot.php', async (req, res) => {
+    try {
+        const response = await fetch(
+            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getMe`
+        );
+        const result = await response.json();
+        
+        res.json({
+            success: true,
+            bot: result,
+            chatId: TELEGRAM_CHAT_ID
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// Submit payment with screenshot
+app.post('/submit-payment.php', upload.single('screenshot'), async (req, res) => {
+    try {
+        const { phoneNumber, betId, countryName, amount, payout } = req.body;
+        const screenshot = req.file;
+        
+        // Validate required fields
+        if (!phoneNumber || !betId || !countryName || !amount || !payout) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing required fields'
+            });
+        }
+        
+        if (!screenshot) {
+            return res.status(400).json({
+                success: false,
+                message: 'Screenshot is required'
+            });
+        }
+        
+        // Send to Telegram
+        const result = await sendToTelegram(
+            phoneNumber,
+            betId,
+            countryName,
+            amount,
+            payout,
+            screenshot.buffer,
+            screenshot.originalname
+        );
+        
+        if (result.ok) {
+            res.json({
+                success: true,
+                message: 'Payment submitted successfully'
+            });
+        } else {
+            throw new Error(result.description || 'Failed to send to Telegram');
+        }
+        
+    } catch (error) {
+        console.error('Error processing payment:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Failed to process payment'
+        });
+    }
+});
+
+// Bot webhook handler
+app.post('/bot-webhook.php', express.json(), async (req, res) => {
+    try {
+        const update = req.body;
+        
+        // Log for debugging
+        console.log('Bot update received:', JSON.stringify(update, null, 2));
+        
+        const message = update.message;
+        const callbackQuery = update.callback_query;
+        
+        // Handle callback queries (button clicks)
+        if (callbackQuery) {
+            const chatId = callbackQuery.message.chat.id;
+            const callbackId = callbackQuery.id;
+            
+            // Answer callback
+            await fetch(
+                `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ callback_query_id: callbackId })
+                }
+            );
+            
+            // Send website link
+            await sendBotMessage(chatId, 
+                '🌐 Please visit our website to place your bet!',
+                {
+                    inline_keyboard: [[
+                        { text: '🌐 Open Betting Website', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+                    ]]
+                }
+            );
+            
+            return res.json({ ok: true });
+        }
+        
+        // Handle text messages
+        if (message) {
+            const chatId = message.chat.id;
+            const text = message.text || '';
+            const userName = message.from.first_name || 'User';
+            
+            if (text === '/start' || text === '⚽ Place Bet' || text === '/bet') {
+                await sendBetMenu(chatId, userName);
+            } else if (text === '📊 My Bets' || text === '/mybets') {
+                await sendMyBets(chatId);
+            } else if (text === '💰 Balance') {
+                await sendBalance(chatId);
+            } else if (text === '📞 Support' || text === '/help') {
+                await sendSupport(chatId);
+            } else {
+                await sendDefaultMessage(chatId);
+            }
+        }
+        
+        res.json({ ok: true });
+        
+    } catch (error) {
+        console.error('Bot webhook error:', error);
+        res.json({ ok: true }); // Always return ok to Telegram
+    }
+});
+
+// Bot helper functions
+async function sendBotMessage(chatId, text, keyboard = null) {
+    const data = {
+        chat_id: chatId,
+        text: text,
+        parse_mode: 'Markdown'
+    };
+    
+    if (keyboard) {
+        data.reply_markup = keyboard;
+    }
+    
+    await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }
+    );
+}
+
+async function sendBetMenu(chatId, userName) {
+    const text = `⚽ *Welcome to World Cup 2026 Betting, ${userName}!*\n\n` +
+                 `🏆 Place your bets on your favorite teams\n` +
+                 `💰 Fixed bet: 100 Birr per team\n` +
+                 `🎯 Win big with competitive odds!\n\n` +
+                 `Click the button below to start betting:`;
+    
+    const keyboard = {
+        inline_keyboard: [[
+            { text: '🌐 Open Betting Website', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+        ]]
+    };
+    
+    await sendBotMessage(chatId, text, keyboard);
+}
+
+async function sendMyBets(chatId) {
+    const text = `📊 *Your Active Bets*\n\n` +
+                 `Visit our website to view your bets and track your winnings!\n\n` +
+                 `All your betting history and active bets are available on the website.`;
+    
+    const keyboard = {
+        inline_keyboard: [[
+            { text: '🌐 View My Bets', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+        ]]
+    };
+    
+    await sendBotMessage(chatId, text, keyboard);
+}
+
+async function sendBalance(chatId) {
+    const text = `💰 *Your Balance*\n\n` +
+                 `Visit our website to view your balance, winnings, and transaction history!\n\n` +
+                 `Track all your bets and payouts in one place.`;
+    
+    const keyboard = {
+        inline_keyboard: [[
+            { text: '🌐 Check Balance', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+        ]]
+    };
+    
+    await sendBotMessage(chatId, text, keyboard);
+}
+
+async function sendSupport(chatId) {
+    const text = `📞 *Support & Help*\n\n` +
+                 `Need assistance? We're here to help!\n\n` +
+                 `Visit our website for:\n` +
+                 `• How to place a bet\n` +
+                 `• Payment methods\n` +
+                 `• Withdrawal process\n` +
+                 `• Betting rules\n` +
+                 `• Contact support team`;
+    
+    const keyboard = {
+        inline_keyboard: [[
+            { text: '🌐 Get Help', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+        ]]
+    };
+    
+    await sendBotMessage(chatId, text, keyboard);
+}
+
+async function sendDefaultMessage(chatId) {
+    const text = `I didn't understand that. Use the menu buttons below or type /start to begin! 😊\n\n` +
+                 `Or visit our website directly:`;
+    
+    const keyboard = {
+        inline_keyboard: [[
+            { text: '🌐 Open Website', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+        ]]
+    };
+    
+    await sendBotMessage(chatId, text, keyboard);
+}
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📱 Telegram Bot Token: ${TELEGRAM_BOT_TOKEN ? '✅ Set' : '❌ Not set'}`);
+    console.log(`💬 Telegram Chat ID: ${TELEGRAM_CHAT_ID ? '✅ Set' : '❌ Not set'}`);
+});
