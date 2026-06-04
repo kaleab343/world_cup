@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 2014;
 
 // Configuration
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8630430801:AAEXDFGSFc3L2HNefbfHuf43gFk1-ewXQxY';
@@ -244,7 +244,10 @@ async function sendBetMenu(chatId, userName) {
     
     const keyboard = {
         inline_keyboard: [[
-            { text: '🌐 Open Betting Website', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            { 
+                text: '🎮 Open Betting App', 
+                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            }
         ]]
     };
     
@@ -253,12 +256,15 @@ async function sendBetMenu(chatId, userName) {
 
 async function sendMyBets(chatId) {
     const text = `📊 *Your Active Bets*\n\n` +
-                 `Visit our website to view your bets and track your winnings!\n\n` +
-                 `All your betting history and active bets are available on the website.`;
+                 `Open the app to view your bets and track your winnings!\n\n` +
+                 `All your betting history and active bets are available in the app.`;
     
     const keyboard = {
         inline_keyboard: [[
-            { text: '🌐 View My Bets', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            { 
+                text: '🎮 Open App', 
+                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            }
         ]]
     };
     
@@ -267,12 +273,15 @@ async function sendMyBets(chatId) {
 
 async function sendBalance(chatId) {
     const text = `💰 *Your Balance*\n\n` +
-                 `Visit our website to view your balance, winnings, and transaction history!\n\n` +
+                 `Open the app to view your balance, winnings, and transaction history!\n\n` +
                  `Track all your bets and payouts in one place.`;
     
     const keyboard = {
         inline_keyboard: [[
-            { text: '🌐 Check Balance', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            { 
+                text: '🎮 Open App', 
+                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            }
         ]]
     };
     
@@ -282,7 +291,7 @@ async function sendBalance(chatId) {
 async function sendSupport(chatId) {
     const text = `📞 *Support & Help*\n\n` +
                  `Need assistance? We're here to help!\n\n` +
-                 `Visit our website for:\n` +
+                 `Open the app for:\n` +
                  `• How to place a bet\n` +
                  `• Payment methods\n` +
                  `• Withdrawal process\n` +
@@ -291,7 +300,10 @@ async function sendSupport(chatId) {
     
     const keyboard = {
         inline_keyboard: [[
-            { text: '🌐 Get Help', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            { 
+                text: '🎮 Get Help', 
+                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            }
         ]]
     };
     
@@ -300,11 +312,14 @@ async function sendSupport(chatId) {
 
 async function sendDefaultMessage(chatId) {
     const text = `I didn't understand that. Use the menu buttons below or type /start to begin! 😊\n\n` +
-                 `Or visit our website directly:`;
+                 `Or open the app directly:`;
     
     const keyboard = {
         inline_keyboard: [[
-            { text: '🌐 Open Website', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            { 
+                text: '🎮 Open App', 
+                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+            }
         ]]
     };
     

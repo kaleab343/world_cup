@@ -1,6 +1,7 @@
-// 48 nations participating in the 2026 FIFA World Cup.
+// 48 nations participating in the 2026 FIFA World Cup (USA, Canada, Mexico).
 // Flag images served from flagcdn.com (ISO 3166-1 alpha-2 codes).
 // Odds are mock data — swap with a live odds API in production.
+// Note: Italy did NOT qualify for 2026 World Cup
 
 export type Country = {
   code: string; // ISO alpha-2
@@ -13,54 +14,77 @@ export type Country = {
 };
 
 export const COUNTRIES: Country[] = [
-  { code: "ar", name: "Argentina",   odds: 4.5,  group: "A", winProbability: 18, worldCupWins: 3, opponents: ["Mexico", "Saudi Arabia", "Poland"] },
-  { code: "br", name: "Brazil",      odds: 4.2,  group: "B", winProbability: 20, worldCupWins: 5, opponents: ["Serbia", "Switzerland", "Cameroon"] },
-  { code: "fr", name: "France",      odds: 5.0,  group: "C", winProbability: 16, worldCupWins: 2, opponents: ["Denmark", "Tunisia", "Australia"] },
-  { code: "es", name: "Spain",       odds: 6.0,  group: "D", winProbability: 13, worldCupWins: 1, opponents: ["Germany", "Japan", "Costa Rica"] },
-  { code: "de", name: "Germany",     odds: 8.0,  group: "D", winProbability: 10, worldCupWins: 4, opponents: ["Spain", "Japan", "Costa Rica"] },
-  { code: "gb-eng", name: "England", odds: 7.5,  group: "E", winProbability: 11, worldCupWins: 1, opponents: ["Iran", "USA", "Wales"] },
-  { code: "pt", name: "Portugal",    odds: 9.0,  group: "F", winProbability: 9,  worldCupWins: 0, opponents: ["Ghana", "Uruguay", "South Korea"] },
-  { code: "nl", name: "Netherlands", odds: 12.0, group: "G", winProbability: 7,  worldCupWins: 0, opponents: ["Senegal", "Ecuador", "Qatar"] },
-  { code: "be", name: "Belgium",     odds: 15.0, group: "H", winProbability: 6,  worldCupWins: 0, opponents: ["Canada", "Morocco", "Croatia"] },
-  { code: "it", name: "Italy",       odds: 13.0, group: "B", winProbability: 7,  worldCupWins: 4, opponents: ["Switzerland", "Cameroon", "Serbia"] },
-  { code: "uy", name: "Uruguay",     odds: 18.0, group: "F", winProbability: 5,  worldCupWins: 2, opponents: ["Portugal", "Ghana", "South Korea"] },
-  { code: "hr", name: "Croatia",     odds: 22.0, group: "H", winProbability: 4,  worldCupWins: 0, opponents: ["Belgium", "Canada", "Morocco"] },
-  { code: "mx", name: "Mexico",      odds: 28.0, group: "A", winProbability: 3,  worldCupWins: 0, opponents: ["Argentina", "Saudi Arabia", "Poland"] },
-  { code: "us", name: "USA",         odds: 25.0, group: "E", winProbability: 3,  worldCupWins: 0, opponents: ["England", "Iran", "Wales"] },
-  { code: "ca", name: "Canada",      odds: 50.0, group: "H", winProbability: 1.5,worldCupWins: 0, opponents: ["Belgium", "Morocco", "Croatia"] },
-  { code: "ma", name: "Morocco",     odds: 35.0, group: "H", winProbability: 2,  worldCupWins: 0, opponents: ["Belgium", "Canada", "Croatia"] },
-  { code: "sn", name: "Senegal",     odds: 45.0, group: "G", winProbability: 1.8,worldCupWins: 0, opponents: ["Netherlands", "Ecuador", "Qatar"] },
-  { code: "jp", name: "Japan",       odds: 40.0, group: "D", winProbability: 2,  worldCupWins: 0, opponents: ["Spain", "Germany", "Costa Rica"] },
-  { code: "kr", name: "South Korea", odds: 55.0, group: "F", winProbability: 1.2,worldCupWins: 0, opponents: ["Portugal", "Ghana", "Uruguay"] },
-  { code: "au", name: "Australia",   odds: 80.0, group: "C", winProbability: 0.8,worldCupWins: 0, opponents: ["France", "Denmark", "Tunisia"] },
-  { code: "ch", name: "Switzerland", odds: 50.0, group: "B", winProbability: 1.4,worldCupWins: 0, opponents: ["Brazil", "Cameroon", "Serbia"] },
-  { code: "dk", name: "Denmark",     odds: 45.0, group: "C", winProbability: 1.6,worldCupWins: 0, opponents: ["France", "Tunisia", "Australia"] },
-  { code: "rs", name: "Serbia",      odds: 65.0, group: "B", winProbability: 1.0,worldCupWins: 0, opponents: ["Brazil", "Switzerland", "Cameroon"] },
-  { code: "pl", name: "Poland",      odds: 60.0, group: "A", winProbability: 1.1,worldCupWins: 0, opponents: ["Argentina", "Mexico", "Saudi Arabia"] },
-  { code: "ec", name: "Ecuador",     odds: 90.0, group: "G", winProbability: 0.7,worldCupWins: 0, opponents: ["Netherlands", "Senegal", "Qatar"] },
-  { code: "gh", name: "Ghana",       odds: 100.0,group: "F", winProbability: 0.6,worldCupWins: 0, opponents: ["Portugal", "Uruguay", "South Korea"] },
-  { code: "cm", name: "Cameroon",    odds: 120.0,group: "B", winProbability: 0.5,worldCupWins: 0, opponents: ["Brazil", "Switzerland", "Serbia"] },
-  { code: "ng", name: "Nigeria",     odds: 70.0, group: "A", winProbability: 0.9,worldCupWins: 0, opponents: ["Argentina", "Mexico", "Poland"] },
-  { code: "ci", name: "Ivory Coast", odds: 110.0,group: "G", winProbability: 0.5,worldCupWins: 0, opponents: ["Netherlands", "Senegal", "Ecuador"] },
-  { code: "eg", name: "Egypt",       odds: 130.0,group: "E", winProbability: 0.4,worldCupWins: 0, opponents: ["England", "USA", "Iran"] },
-  { code: "dz", name: "Algeria",     odds: 150.0,group: "C", winProbability: 0.3,worldCupWins: 0, opponents: ["France", "Denmark", "Australia"] },
-  { code: "tn", name: "Tunisia",     odds: 200.0,group: "C", winProbability: 0.2,worldCupWins: 0, opponents: ["France", "Denmark", "Australia"] },
-  { code: "sa", name: "Saudi Arabia",odds: 150.0,group: "A", winProbability: 0.3,worldCupWins: 0, opponents: ["Argentina", "Mexico", "Poland"] },
-  { code: "ir", name: "Iran",        odds: 180.0,group: "E", winProbability: 0.25,worldCupWins: 0, opponents: ["England", "USA", "Wales"] },
-  { code: "qa", name: "Qatar",       odds: 250.0,group: "G", winProbability: 0.15,worldCupWins: 0, opponents: ["Netherlands", "Senegal", "Ecuador"] },
-  { code: "ae", name: "UAE",         odds: 250.0,group: "D", winProbability: 0.15,worldCupWins: 0, opponents: ["Spain", "Germany", "Japan"] },
-  { code: "jo", name: "Jordan",      odds: 300.0,group: "F", winProbability: 0.1, worldCupWins: 0, opponents: ["Portugal", "Ghana", "Uruguay"] },
-  { code: "uz", name: "Uzbekistan",  odds: 300.0,group: "H", winProbability: 0.1, worldCupWins: 0, opponents: ["Belgium", "Canada", "Morocco"] },
-  { code: "cr", name: "Costa Rica",  odds: 200.0,group: "D", winProbability: 0.2, worldCupWins: 0, opponents: ["Spain", "Germany", "Japan"] },
-  { code: "pa", name: "Panama",      odds: 250.0,group: "E", winProbability: 0.15,worldCupWins: 0, opponents: ["England", "USA", "Iran"] },
-  { code: "py", name: "Paraguay",    odds: 180.0,group: "A", winProbability: 0.25,worldCupWins: 0, opponents: ["Argentina", "Mexico", "Saudi Arabia"] },
-  { code: "ve", name: "Venezuela",   odds: 220.0,group: "F", winProbability: 0.2, worldCupWins: 0, opponents: ["Portugal", "Uruguay", "Ghana"] },
-  { code: "co", name: "Colombia",    odds: 35.0, group: "G", winProbability: 2.2, worldCupWins: 0, opponents: ["Netherlands", "Ecuador", "Qatar"] },
-  { code: "cl", name: "Chile",       odds: 90.0, group: "B", winProbability: 0.7, worldCupWins: 0, opponents: ["Brazil", "Switzerland", "Serbia"] },
-  { code: "gb-wls", name: "Wales",   odds: 150.0,group: "E", winProbability: 0.3, worldCupWins: 0, opponents: ["England", "USA", "Iran"] },
-  { code: "gb-sct", name: "Scotland",odds: 130.0,group: "H", winProbability: 0.4, worldCupWins: 0, opponents: ["Belgium", "Canada", "Morocco"] },
-  { code: "no", name: "Norway",      odds: 60.0, group: "D", winProbability: 1.2, worldCupWins: 0, opponents: ["Spain", "Germany", "Japan"] },
-  { code: "tr", name: "Türkiye",     odds: 75.0, group: "F", winProbability: 1.0, worldCupWins: 0, opponents: ["Portugal", "Ghana", "Uruguay"] },
+  // Group A - Strong contenders
+  { code: "ar", name: "Argentina",   odds: 4.5,  group: "A", winProbability: 18, worldCupWins: 3, opponents: ["Peru", "Chile", "Canada"] },
+  { code: "br", name: "Brazil",      odds: 4.2,  group: "A", winProbability: 20, worldCupWins: 5, opponents: ["Uruguay", "Colombia", "Paraguay"] },
+  { code: "fr", name: "France",      odds: 5.0,  group: "A", winProbability: 16, worldCupWins: 2, opponents: ["Netherlands", "England", "Portugal"] },
+  { code: "es", name: "Spain",       odds: 6.0,  group: "A", winProbability: 13, worldCupWins: 1, opponents: ["Germany", "Belgium", "Croatia"] },
+  
+  // Group B - European Teams
+  { code: "de", name: "Germany",     odds: 7.0,  group: "B", winProbability: 12, worldCupWins: 4, opponents: ["Spain", "Poland", "Ukraine"] },
+  { code: "gb-eng", name: "England", odds: 7.5,  group: "B", winProbability: 11, worldCupWins: 1, opponents: ["France", "Denmark", "Switzerland"] },
+  { code: "pt", name: "Portugal",    odds: 9.0,  group: "B", winProbability: 9,  worldCupWins: 0, opponents: ["Netherlands", "Croatia", "Serbia"] },
+  { code: "nl", name: "Netherlands", odds: 10.0, group: "B", winProbability: 8,  worldCupWins: 0, opponents: ["Portugal", "France", "Denmark"] },
+  
+  // Group C - European & South American Mix
+  { code: "be", name: "Belgium",     odds: 14.0, group: "C", winProbability: 6,  worldCupWins: 0, opponents: ["Spain", "Switzerland", "Austria"] },
+  { code: "uy", name: "Uruguay",     odds: 16.0, group: "C", winProbability: 5,  worldCupWins: 2, opponents: ["Brazil", "Colombia", "Ecuador"] },
+  { code: "hr", name: "Croatia",     odds: 20.0, group: "C", winProbability: 4,  worldCupWins: 0, opponents: ["Portugal", "Serbia", "Poland"] },
+  { code: "co", name: "Colombia",    odds: 22.0, group: "C", winProbability: 3.8, worldCupWins: 0, opponents: ["Brazil", "Uruguay", "Ecuador"] },
+  
+  // Group D - CONCACAF (Hosts) + Strong Teams
+  { code: "us", name: "USA",         odds: 20.0, group: "D", winProbability: 4.5, worldCupWins: 0, opponents: ["Mexico", "Canada", "Costa Rica"] },
+  { code: "mx", name: "Mexico",      odds: 25.0, group: "D", winProbability: 3.5, worldCupWins: 0, opponents: ["USA", "Canada", "Jamaica"] },
+  { code: "ca", name: "Canada",      odds: 40.0, group: "D", winProbability: 2.0, worldCupWins: 0, opponents: ["USA", "Mexico", "Panama"] },
+  
+  // Group E - European Teams
+  { code: "ch", name: "Switzerland", odds: 35.0, group: "E", winProbability: 2.3, worldCupWins: 0, opponents: ["Belgium", "Denmark", "Austria"] },
+  { code: "dk", name: "Denmark",     odds: 40.0, group: "E", winProbability: 2.0, worldCupWins: 0, opponents: ["Netherlands", "Switzerland", "Norway"] },
+  { code: "pl", name: "Poland",      odds: 50.0, group: "E", winProbability: 1.6, worldCupWins: 0, opponents: ["Germany", "Ukraine", "Czech Republic"] },
+  { code: "rs", name: "Serbia",      odds: 60.0, group: "E", winProbability: 1.3, worldCupWins: 0, opponents: ["Croatia", "Portugal", "Hungary"] },
+  
+  // Group F - Asian & African Teams
+  { code: "jp", name: "Japan",       odds: 35.0, group: "F", winProbability: 2.2, worldCupWins: 0, opponents: ["South Korea", "Iran", "Saudi Arabia"] },
+  { code: "kr", name: "South Korea", odds: 45.0, group: "F", winProbability: 1.8, worldCupWins: 0, opponents: ["Japan", "Australia", "Iraq"] },
+  { code: "ma", name: "Morocco",     odds: 30.0, group: "F", winProbability: 2.5, worldCupWins: 0, opponents: ["Senegal", "Egypt", "Tunisia"] },
+  { code: "sn", name: "Senegal",     odds: 40.0, group: "F", winProbability: 2.0, worldCupWins: 0, opponents: ["Morocco", "Nigeria", "Ghana"] },
+  
+  // Group G - More Qualified Teams
+  { code: "au", name: "Australia",   odds: 70.0, group: "G", winProbability: 1.0, worldCupWins: 0, opponents: ["South Korea", "Japan", "New Zealand"] },
+  { code: "ec", name: "Ecuador",     odds: 65.0, group: "G", winProbability: 1.2, worldCupWins: 0, opponents: ["Colombia", "Peru", "Venezuela"] },
+  { code: "gh", name: "Ghana",       odds: 80.0, group: "G", winProbability: 0.9, worldCupWins: 0, opponents: ["Senegal", "Nigeria", "Cameroon"] },
+  { code: "cm", name: "Cameroon",    odds: 90.0, group: "G", winProbability: 0.8, worldCupWins: 0, opponents: ["Ghana", "Ivory Coast", "Mali"] },
+  
+  // Group H - Additional Qualifiers
+  { code: "ng", name: "Nigeria",     odds: 60.0, group: "H", winProbability: 1.3, worldCupWins: 0, opponents: ["Senegal", "Ghana", "Algeria"] },
+  { code: "ci", name: "Ivory Coast", odds: 85.0, group: "H", winProbability: 0.85, worldCupWins: 0, opponents: ["Cameroon", "Mali", "Burkina Faso"] },
+  { code: "eg", name: "Egypt",       odds: 75.0, group: "H", winProbability: 1.0, worldCupWins: 0, opponents: ["Morocco", "Tunisia", "Algeria"] },
+  { code: "dz", name: "Algeria",     odds: 95.0, group: "H", winProbability: 0.7, worldCupWins: 0, opponents: ["Egypt", "Tunisia", "Nigeria"] },
+  
+  // Group I - More Teams
+  { code: "tn", name: "Tunisia",     odds: 100.0, group: "I", winProbability: 0.6, worldCupWins: 0, opponents: ["Morocco", "Egypt", "Algeria"] },
+  { code: "sa", name: "Saudi Arabia",odds: 90.0,  group: "I", winProbability: 0.75, worldCupWins: 0, opponents: ["Iran", "Japan", "Iraq"] },
+  { code: "ir", name: "Iran",        odds: 85.0,  group: "I", winProbability: 0.8, worldCupWins: 0, opponents: ["Japan", "Saudi Arabia", "UAE"] },
+  { code: "qa", name: "Qatar",       odds: 120.0, group: "I", winProbability: 0.5, worldCupWins: 0, opponents: ["Saudi Arabia", "Iraq", "Jordan"] },
+  
+  // Group J - South American & CONCACAF
+  { code: "pe", name: "Peru",        odds: 80.0,  group: "J", winProbability: 0.9, worldCupWins: 0, opponents: ["Argentina", "Chile", "Paraguay"] },
+  { code: "cl", name: "Chile",       odds: 85.0,  group: "J", winProbability: 0.8, worldCupWins: 0, opponents: ["Argentina", "Peru", "Bolivia"] },
+  { code: "py", name: "Paraguay",    odds: 110.0, group: "J", winProbability: 0.6, worldCupWins: 0, opponents: ["Brazil", "Argentina", "Venezuela"] },
+  { code: "ve", name: "Venezuela",   odds: 130.0, group: "J", winProbability: 0.5, worldCupWins: 0, opponents: ["Paraguay", "Ecuador", "Bolivia"] },
+  
+  // Group K - CONCACAF & Others
+  { code: "cr", name: "Costa Rica",  odds: 110.0, group: "K", winProbability: 0.6, worldCupWins: 0, opponents: ["Mexico", "USA", "Panama"] },
+  { code: "pa", name: "Panama",      odds: 140.0, group: "K", winProbability: 0.45, worldCupWins: 0, opponents: ["Canada", "Costa Rica", "Jamaica"] },
+  { code: "jm", name: "Jamaica",     odds: 150.0, group: "K", winProbability: 0.4, worldCupWins: 0, opponents: ["Mexico", "Panama", "Honduras"] },
+  { code: "hn", name: "Honduras",    odds: 160.0, group: "K", winProbability: 0.35, worldCupWins: 0, opponents: ["Jamaica", "El Salvador", "Trinidad"] },
+  
+  // Group L - European & Other Teams
+  { code: "ua", name: "Ukraine",     odds: 70.0,  group: "L", winProbability: 1.0, worldCupWins: 0, opponents: ["Poland", "Czech Republic", "Slovakia"] },
+  { code: "at", name: "Austria",     odds: 80.0,  group: "L", winProbability: 0.9, worldCupWins: 0, opponents: ["Switzerland", "Belgium", "Hungary"] },
+  { code: "cz", name: "Czech Republic", odds: 100.0, group: "L", winProbability: 0.6, worldCupWins: 0, opponents: ["Poland", "Ukraine", "Slovakia"] },
+  { code: "hu", name: "Hungary",     odds: 120.0, group: "L", winProbability: 0.5, worldCupWins: 0, opponents: ["Serbia", "Austria", "Romania"] },
+  { code: "nz", name: "New Zealand", odds: 140.0, group: "L", winProbability: 0.4, worldCupWins: 0, opponents: ["Australia", "Fiji", "Solomon Islands"] },
 ];
 
 export const flagUrl = (code: string, size: "w320" | "w640" | "w1280" = "w640") =>
