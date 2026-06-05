@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 2014;
 
 // Configuration
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8630430801:AAEXDFGSFc3L2HNefbfHuf43gFk1-ewXQxY';
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8840845626:AAE9Mj9zenR88dy8IZ220bH_4HeEOGz-lSA';
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '500761652';
 
 // Middleware

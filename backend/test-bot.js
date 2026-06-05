@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const botToken = process.env.TELEGRAM_BOT_TOKEN || "8630430801:AAEXDFGSFc3L2HNefbfHuf43gFk1-ewXQxY";
+const botToken = process.env.TELEGRAM_BOT_TOKEN || "8840845626:AAE9Mj9zenR88dy8IZ220bH_4HeEOGz-lSA";
 const chatId = process.env.TELEGRAM_CHAT_ID || "500761652";
 
 async function testBot() {
