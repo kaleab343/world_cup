@@ -105,10 +105,7 @@ const PaymentPage = () => {
         setScreenshot(null);
         setPreviewUrl('');
         
-        // Redirect to homepage after 8 seconds
-        setTimeout(() => {
-          navigate('/');
-        }, 8000);
+        // No auto-redirect - user must click button
       } else {
         throw new Error(result.message || 'Failed to submit payment');
       }
@@ -375,12 +372,6 @@ const PaymentPage = () => {
                       : 'Your payment is being verified. Our support team will contact you soon via Telegram.'}
                   </p>
                 </div>
-
-                <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                  {language === 'am' 
-                    ? '🔄 በ 8 ሰከንድ ውስጥ ወደ መነሻ ገጽ ይመለሳሉ...'
-                    : '🔄 Redirecting to homepage in 8 seconds...'}
-                </p>
               </motion.div>
 
               {/* Manual redirect button */}
