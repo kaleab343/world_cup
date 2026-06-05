@@ -13,6 +13,20 @@ const HomePage = () => {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-background">
+      {/* Main Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ 
+          backgroundImage: 'url(/world-cup-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+        aria-hidden="true"
+      />
+      
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/60" />
+      
       {/* Language Toggle */}
       <div className="absolute right-4 top-4 z-20 sm:right-6 sm:top-6">
         <Button
@@ -25,38 +39,6 @@ const HomePage = () => {
           {language === 'en' ? 'አማርኛ' : 'English'}
         </Button>
       </div>
-      {/* Flag mosaic background with blend effect */}
-      <div
-        className="absolute inset-0 grid gap-1 p-1"
-        style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}
-        aria-hidden="true"
-      >
-        {COUNTRIES.map((c, i) => (
-          <motion.div
-            key={c.code}
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ 
-              opacity: [0.55, 0.75, 0.55],
-              scale: [1, 1.05, 1]
-            }}
-            transition={{ 
-              delay: i * 0.015, 
-              duration: 4,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-            className="aspect-[4/3] overflow-hidden rounded-sm bg-cover bg-center"
-            style={{ 
-              backgroundImage: `url(${flagUrl(c.code, "w320")})`,
-              mixBlendMode: "lighten"
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
 
       {/* Hero */}
       <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-20 text-center">
