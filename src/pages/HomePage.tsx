@@ -13,19 +13,19 @@ const HomePage = () => {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Main Background Image */}
+      {/* Main Background Image - Optimized for mobile */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-center bg-no-repeat"
         style={{ 
           backgroundImage: 'url(/world-cup-bg.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundSize: 'contain',
+          backgroundPosition: 'top center'
         }}
         aria-hidden="true"
       />
       
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/60" />
+      {/* Gradient overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-background" />
       
       {/* Language Toggle */}
       <div className="absolute right-4 top-4 z-20 sm:right-6 sm:top-6">
