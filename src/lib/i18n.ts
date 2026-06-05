@@ -77,7 +77,7 @@ export const translations = {
     selectNation: 'ሀገር ይምረጡ',
     allContenders: '48 ተወዳዳሪዎች',
     teams: 'ቡድኖች',
-    betOn: 'ውርር በ',
+    betOn: 'ውርርድ በ',
     footer: 'ለመዝናኛ ብቻ · 18+',
     
     // CountryPage
@@ -96,7 +96,7 @@ export const translations = {
     // ConfirmationPage
     betConfirmed: 'ውርር ተረጋግጧል',
     betPlaced: 'ውርርዎ ተቀምጧል። አሁን ተቀምጠው ድንቅ ነገሩን ይመልከቱ።',
-    stake: 'ውርር',
+    stake: 'ውርርድ',
     odds: 'እድል',
     payout: 'ክፍያ',
     expectedPayoutDate: 'የሚጠበቅ የክፍያ ቀን',
@@ -108,11 +108,11 @@ export const translations = {
     myBets: 'የኔ',
     betsTitle: 'ውርሮች',
     betsPlaced: 'ለዓለም ዋንጫ 2026 የተደረጉ ውርሮች',
-    betSingular: 'ውርር',
+    betSingular: 'ውርርድ',
     betsPlural: 'ውርሮች',
     noBetsYet: 'ገና ምንም ውርር የለም።',
     placeFirstBet: 'የመጀመሪያ ውርርዎን ያድርጉ',
-    stakeWin: 'ውርር → አሸናፊ',
+    stakeWin: 'ውርርድ → አሸናፊ',
     cashOut: 'ገንዘብ ውጣ',
     
     // WithdrawalsPage
