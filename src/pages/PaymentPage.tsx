@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Upload, Copy, Check, MessageCircle, Languages } from "lucide-react";
 import { getBets } from "@/lib/bets";
 import { flagUrl } from "@/data/countries";
@@ -19,6 +19,7 @@ console.log('API_ENDPOINT:', API_ENDPOINT); // Debug log
 
 const PaymentPage = () => {
   const { id = "" } = useParams();
+  const navigate = useNavigate();
   const bet = useMemo(() => getBets().find((b) => b.id === id), [id]);
   const { language, setLanguage } = useLanguage();
   const t = (key: any) => getTranslation(language, key);
@@ -28,6 +29,7 @@ const PaymentPage = () => {
   const [screenshot, setScreenshot] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [copied, setCopied] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -95,19 +97,18 @@ const PaymentPage = () => {
       const result = await response.json();
 
       if (result.success) {
-        // Show success message instead of QR modal
-        toast({
-          title: language === 'am' ? '✅ ክፍያ ተልኳል!' : '✅ Payment Submitted!',
-          description: language === 'am' 
-            ? 'ክፍያዎ በማረጋገጫ ላይ ነው። የድጋፍ ቡድናችን በቅርቡ ያነጋግርዎታል።'
-            : 'Your payment is being verified. Our support team will contact you soon.',
-          duration: 8000,
-        });
+        // Show success modal
+        setShowSuccessModal(true);
         
         // Clear form
         setPhoneNumber('');
         setScreenshot(null);
         setPreviewUrl('');
+        
+        // Redirect to homepage after 5 seconds
+        setTimeout(() => {
+          navigate('/');
+        }, 5000);
       } else {
         throw new Error(result.message || 'Failed to submit payment');
       }
@@ -322,6 +323,84 @@ const PaymentPage = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Success Modal - Shows after payment submission */}
+      <AnimatePresence>
+        {showSuccessModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: 20 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="relative w-full max-w-md rounded-2xl border border-gold/30 bg-card p-8 text-center"
+            >
+              {/* Success Icon */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-gold shadow-glow"
+              >
+                <Check className="h-10 w-10 text-primary-foreground" strokeWidth={3} />
+              </motion.div>
+
+              {/* Title */}
+              <motion.h2
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-6 font-display text-3xl text-gold"
+              >
+                {language === 'am' ? '✅ ክፍያ ተልኳል!' : '✅ Payment Submitted!'}
+              </motion.h2>
+
+              {/* Message */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-6 space-y-4"
+              >
+                <div className="rounded-lg border border-gold/20 bg-gold/5 p-6">
+                  <MessageCircle className="mx-auto h-12 w-12 text-gold mb-4" />
+                  <p className="font-editorial text-base text-muted-foreground leading-relaxed">
+                    {language === 'am' 
+                      ? 'ክፍያዎ በማረጋገጫ ላይ ነው። የድጋፍ ቡድናችን በቅርቡ በቴሌግራም ያነጋግርዎታል።'
+                      : 'Your payment is being verified. Our support team will contact you soon via Telegram.'}
+                  </p>
+                </div>
+
+                <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  {language === 'am' 
+                    ? '🔄 በ 5 ሰከንድ ውስጥ ወደ መነሻ ገጽ ይመለሳሉ...'
+                    : '🔄 Redirecting to homepage in 5 seconds...'}
+                </p>
+              </motion.div>
+
+              {/* Manual redirect button */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mt-6"
+              >
+                <Button
+                  onClick={() => navigate('/')}
+                  className="w-full bg-gradient-gold font-editorial uppercase tracking-wider text-primary-foreground hover:opacity-90"
+                >
+                  {language === 'am' ? 'አሁን ተመለስ' : 'Go Back Now'}
+                </Button>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
