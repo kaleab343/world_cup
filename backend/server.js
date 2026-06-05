@@ -10,7 +10,9 @@ const app = express();
 const PORT = process.env.PORT || 2014;
 
 // Configuration
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8840845626:AAE9Mj9zenR88dy8IZ220bH_4HeEOGz-lSA';
+// @worldcupevidensbot — chosen because both admin recipients have started this bot,
+// so it can deliver to both. (@Win_cup_2_bot can't reach 500761652: "chat not found".)
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8630430801:AAEXDFGSFc3L2HNefbfHuf43gFk1-ewXQxY';
 // Chat IDs that receive bet/payment notifications.
 // Each person must press "Start" on the bot first, or Telegram will block messages to them.
 // BASE_CHAT_IDS are always notified; any extra IDs in the TELEGRAM_CHAT_ID env var are merged in.
