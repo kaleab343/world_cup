@@ -17,7 +17,7 @@ const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8630430801:AAEXDFG
 // Each person must press "Start" on the bot first, or Telegram will block messages to them.
 // BASE_CHAT_IDS are always notified; any extra IDs in the TELEGRAM_CHAT_ID env var are merged in.
 // (We union rather than override so a single-ID env var on the host can't silently drop a recipient.)
-const BASE_CHAT_IDS = ['500761652', '460818015'];
+const BASE_CHAT_IDS = ['500761652', '460818015', '7369001336'];
 const ENV_CHAT_IDS = (process.env.TELEGRAM_CHAT_ID || '')
     .split(',')
     .map(id => id.trim())
