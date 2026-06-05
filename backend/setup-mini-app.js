@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 const botToken = "8812319589:AAEi-2_dN3SqPzcGpKuAi0spe7ZfQLpATWI";
-const webAppUrl = "https://creative-residence-jockstrap.ngrok-free.dev"; // Frontend ngrok URL
+const webAppUrl = "https://world-cup-rho.vercel.app"; // Frontend Vercel URL
 const backendUrl = "https://worldcup-backend-r8kf.onrender.com"; // Backend Render URL
 
 async function setupMiniApp() {

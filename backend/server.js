@@ -178,7 +178,7 @@ app.post('/bot-webhook.php', express.json(), async (req, res) => {
                 '🌐 Please visit our website to place your bet!',
                 {
                     inline_keyboard: [[
-                        { text: '🌐 Open Betting Website', url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+                        { text: '🌐 Open Betting Website', url: 'https://world-cup-rho.vercel.app' }
                     ]]
                 }
             );
@@ -246,7 +246,7 @@ async function sendBetMenu(chatId, userName) {
         inline_keyboard: [[
             { 
                 text: '🎮 Open Betting App', 
-                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+                web_app: { url: 'https://world-cup-rho.vercel.app' }
             }
         ]]
     };
@@ -263,7 +263,7 @@ async function sendMyBets(chatId) {
         inline_keyboard: [[
             { 
                 text: '🎮 Open App', 
-                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+                web_app: { url: 'https://world-cup-rho.vercel.app' }
             }
         ]]
     };
@@ -280,7 +280,7 @@ async function sendBalance(chatId) {
         inline_keyboard: [[
             { 
                 text: '🎮 Open App', 
-                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+                web_app: { url: 'https://world-cup-rho.vercel.app' }
             }
         ]]
     };
@@ -302,7 +302,7 @@ async function sendSupport(chatId) {
         inline_keyboard: [[
             { 
                 text: '🎮 Get Help', 
-                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+                web_app: { url: 'https://world-cup-rho.vercel.app' }
             }
         ]]
     };
@@ -318,7 +318,7 @@ async function sendDefaultMessage(chatId) {
         inline_keyboard: [[
             { 
                 text: '🎮 Open App', 
-                web_app: { url: 'https://creative-residence-jockstrap.ngrok-free.dev' }
+                web_app: { url: 'https://world-cup-rho.vercel.app' }
             }
         ]]
     };
