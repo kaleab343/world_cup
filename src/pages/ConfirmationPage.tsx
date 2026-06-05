@@ -86,12 +86,16 @@ const ConfirmationPage = () => {
           <Check className="h-10 w-10 text-primary-foreground" strokeWidth={3} />
         </motion.div>
 
-        <p className="mt-6 font-mono text-xs uppercase tracking-[0.3em] text-gold">{t('betConfirmed')}</p>
-        <h1 className="font-display mt-3 text-5xl leading-none sm:text-7xl">
-          {bet.countryName.toUpperCase()}
+        <p className="mt-6 font-mono text-xs uppercase tracking-[0.3em] text-gold">
+          {language === 'am' ? 'ክፍያ ተልኳል' : 'Payment Submitted'}
+        </p>
+        <h1 className="font-display mt-3 text-4xl leading-none sm:text-6xl">
+          {language === 'am' ? 'በማረጋገጫ ላይ' : 'Being Verified'}
         </h1>
         <p className="mt-4 font-editorial text-base text-muted-foreground sm:text-lg">
-          {t('betPlaced')}
+          {language === 'am' 
+            ? 'ክፍያዎ በማረጋገጫ ላይ ነው። የድጋፍ ቡድናችን በቅርቡ ያነጋግርዎታል።'
+            : 'Your payment is being verified. Our support team will contact you soon.'}
         </p>
 
         <div className="mt-10 grid grid-cols-3 gap-4 border-y border-border/60 py-6 text-left">
@@ -100,8 +104,10 @@ const ConfirmationPage = () => {
           <Field label={t('payout')} value={formatCurrency(bet.payout, language)} highlight />
         </div>
 
-        <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-          {t('expectedPayoutDate')} · <span className="text-gold">{bet.payoutDate}</span>
+        <p className="mt-6 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
+          {language === 'am' 
+            ? '📞 የድጋፍ ቡድን ያነጋግርዎታል'
+            : '📞 Support team will contact you'}
         </p>
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
