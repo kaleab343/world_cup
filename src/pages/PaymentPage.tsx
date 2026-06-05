@@ -121,7 +121,7 @@ const PaymentPage = () => {
 
   const handleCloseQR = () => {
     setShowQRModal(false);
-    navigate(`/confirmation/${bet.id}`);
+    // Stay on payment page instead of navigating away
   };
 
   return (
@@ -374,15 +374,24 @@ const PaymentPage = () => {
                 <div className="mt-6 rounded-lg border border-gold/30 bg-gold/5 p-4">
                   <div className="flex items-start gap-3">
                     <Camera className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
-                    <div className="space-y-2 text-left">
+                    <div className="space-y-3 text-left">
                       <p className="font-editorial text-sm font-bold text-gold">
-                        {language === 'am' ? '⚠️ አስፈላጊ:' : '⚠️ Important:'}
+                        {language === 'am' ? '✅ ክፍያ ቀርቧል!' : '✅ Payment Submitted!'}
+                      </p>
+                      <p className="font-editorial text-sm text-muted-foreground">
+                        {language === 'am' 
+                          ? 'ክፍያዎ በማረጋገጫ ላይ ነው። የድጋፍ ቡድናችን በቅርቡ ያነጋግርዎታል።'
+                          : 'Your payment is being verified. Our support team will contact you soon.'}
+                      </p>
+                      <p className="font-editorial text-sm font-bold text-gold">
+                        {language === 'am' ? '📱 የሚቀጥሉት ደረጃዎች:' : '📱 Next Steps:'}
                       </p>
                       <ol className="space-y-1 font-editorial text-sm text-muted-foreground list-decimal list-inside">
                         <li>{language === 'am' ? 'ይህንን QR በስክሪንሾት ያድርጉ' : 'Screenshot this QR code'}</li>
                         <li>{language === 'am' ? 'ቴሌብር አፕ ይክፈቱ' : 'Open TeleBirr app'}</li>
                         <li>{language === 'am' ? 'QR ስካን ይምረጡ' : 'Select Scan QR'}</li>
-                        <li>{language === 'am' ? 'ክፍያውን ይክፈሉ' : 'Complete payment'}</li>
+                        <li>{language === 'am' ? 'ክፍያውን ያጠናቅቁ' : 'Complete payment'}</li>
+                        <li>{language === 'am' ? 'የድጋፍ ቡድን ያነጋግርዎታል' : 'Support team will contact you'}</li>
                       </ol>
                     </div>
                   </div>
