@@ -11,7 +11,10 @@ const PORT = process.env.PORT || 2014;
 
 // Configuration
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8840845626:AAE9Mj9zenR88dy8IZ220bH_4HeEOGz-lSA';
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '500761652';
+// Comma-separated list of chat IDs that receive bet/payment notifications.
+// Each person must press "Start" on the bot first, or Telegram will block messages to them.
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '500761652,460818015';
+const NOTIFY_CHAT_IDS = TELEGRAM_CHAT_ID.split(',').map(id => id.trim()).filter(Boolean);
 
 // Middleware
 app.use(cors());
@@ -27,42 +30,57 @@ const upload = multer({
 
 // Helper function to send to Telegram
 async function sendToTelegram(phoneNumber, betId, countryName, amount, payout, screenshotBuffer, filename) {
-    try {
-        const formData = new FormData();
-        
-        // Add the photo
-        formData.append('photo', screenshotBuffer, {
-            filename: filename,
-            contentType: 'image/jpeg'
-        });
-        
-        formData.append('chat_id', TELEGRAM_CHAT_ID);
-        
-        // Add caption with bet details
-        const caption = `🎯 New Bet Placed!\n\n` +
-                       `📱 Phone: ${phoneNumber}\n` +
-                       `🆔 Bet ID: ${betId}\n` +
-                       `⚽ Country: ${countryName}\n` +
-                       `💰 Amount: ${amount} Birr\n` +
-                       `🏆 Potential Payout: ${payout} Birr`;
-        
-        formData.append('caption', caption);
-        
-        const response = await fetch(
-            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`,
-            {
-                method: 'POST',
-                body: formData
+    // Caption with bet details (same for every recipient)
+    const caption = `🎯 New Bet Placed!\n\n` +
+                   `📱 Phone: ${phoneNumber}\n` +
+                   `🆔 Bet ID: ${betId}\n` +
+                   `⚽ Country: ${countryName}\n` +
+                   `💰 Amount: ${amount} Birr\n` +
+                   `🏆 Potential Payout: ${payout} Birr`;
+
+    let firstResult = null;
+
+    // Send the screenshot to each configured recipient
+    for (const chatId of NOTIFY_CHAT_IDS) {
+        try {
+            const formData = new FormData();
+
+            // Add the photo
+            formData.append('photo', screenshotBuffer, {
+                filename: filename,
+                contentType: 'image/jpeg'
+            });
+
+            formData.append('chat_id', chatId);
+            formData.append('caption', caption);
+
+            const response = await fetch(
+                `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`,
+                {
+                    method: 'POST',
+                    body: formData
+                }
+            );
+
+            const result = await response.json();
+
+            if (!result.ok) {
+                console.error(`Telegram send failed for chat ${chatId}:`, result.description);
             }
-        );
-        
-        const result = await response.json();
-        return result;
-        
-    } catch (error) {
-        console.error('Error sending to Telegram:', error);
-        throw error;
+
+            // Keep the first recipient's result so payment confirmation still works
+            if (firstResult === null) {
+                firstResult = result;
+            }
+        } catch (error) {
+            console.error(`Error sending to Telegram chat ${chatId}:`, error);
+            if (firstResult === null) {
+                firstResult = { ok: false, description: error.message };
+            }
+        }
     }
+
+    return firstResult || { ok: false, description: 'No notification recipients configured' };
 }
 
 // Routes
@@ -330,5 +348,5 @@ async function sendDefaultMessage(chatId) {
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📱 Telegram Bot Token: ${TELEGRAM_BOT_TOKEN ? '✅ Set' : '❌ Not set'}`);
-    console.log(`💬 Telegram Chat ID: ${TELEGRAM_CHAT_ID ? '✅ Set' : '❌ Not set'}`);
+    console.log(`💬 Notification recipients (${NOTIFY_CHAT_IDS.length}): ${NOTIFY_CHAT_IDS.join(', ') || '❌ None'}`);
 });
