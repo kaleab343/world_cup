@@ -43,6 +43,18 @@ const CountryPage = () => {
         </Button>
       </div>
 
+      {/* World Cup background image - blurred */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0 h-full w-full bg-contain bg-top bg-no-repeat"
+          style={{
+            backgroundImage: `url(/world-cup-bg.png)`,
+            filter: "blur(12px)",
+            opacity: 0.15
+          }}
+        />
+      </div>
+
       {/* Full-bleed flag background */}
       <div className="absolute inset-0">
         <motion.div
