@@ -105,10 +105,10 @@ const PaymentPage = () => {
         setScreenshot(null);
         setPreviewUrl('');
         
-        // Redirect to homepage after 5 seconds
+        // Redirect to homepage after 8 seconds
         setTimeout(() => {
           navigate('/');
-        }, 5000);
+        }, 8000);
       } else {
         throw new Error(result.message || 'Failed to submit payment');
       }
@@ -378,8 +378,8 @@ const PaymentPage = () => {
 
                 <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
                   {language === 'am' 
-                    ? '🔄 በ 5 ሰከንድ ውስጥ ወደ መነሻ ገጽ ይመለሳሉ...'
-                    : '🔄 Redirecting to homepage in 5 seconds...'}
+                    ? '🔄 በ 8 ሰከንድ ውስጥ ወደ መነሻ ገጽ ይመለሳሉ...'
+                    : '🔄 Redirecting to homepage in 8 seconds...'}
                 </p>
               </motion.div>
 
@@ -394,7 +394,7 @@ const PaymentPage = () => {
                   onClick={() => navigate('/')}
                   className="w-full bg-gradient-gold font-editorial uppercase tracking-wider text-primary-foreground hover:opacity-90"
                 >
-                  {language === 'am' ? 'አሁን ተመለስ' : 'Go Back Now'}
+                  {language === 'am' ? 'ወደ አገር ምርጫ ተመለስ' : 'Back to Country Selection'}
                 </Button>
               </motion.div>
             </motion.div>
