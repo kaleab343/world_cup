@@ -65,7 +65,7 @@ const MyBetsPage = () => {
           {t('myBets')} <span className="text-gold">{t('betsTitle')}</span>
         </h1>
         <p className="mt-3 font-editorial text-muted-foreground">
-          {bets.length} {bets.length === 1 ? t('bet') : t('bets')} {t('betsPlaced')}
+          {bets.length} {bets.length === 1 ? t('betSingular') : t('betsPlural')} {t('betsPlaced')}
         </p>
 
         {bets.length === 0 ? (
