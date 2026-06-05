@@ -122,10 +122,6 @@ const HomePage = () => {
           ))}
         </div>
       </section>
-
-      <footer className="relative z-10 border-t border-border/50 py-6 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-        {t('footer')}
-      </footer>
     </div>
   );
 };
