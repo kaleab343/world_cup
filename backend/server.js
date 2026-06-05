@@ -100,6 +100,24 @@ app.get('/', (req, res) => {
     });
 });
 
+// Debug: show what recipients/bot the LIVE server is actually running with.
+// (Token is never exposed — only the bot's public username via getMe.)
+app.get('/debug-config', async (req, res) => {
+    let botUsername = null;
+    try {
+        const r = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getMe`);
+        const j = await r.json();
+        botUsername = j.ok ? j.result.username : `error: ${j.description}`;
+    } catch (e) {
+        botUsername = `network error: ${e.message}`;
+    }
+    res.json({
+        bot: botUsername,
+        notifyChatIds: NOTIFY_CHAT_IDS,
+        envChatIdRaw: process.env.TELEGRAM_CHAT_ID || '(unset)',
+    });
+});
+
 // Test bot connection
 app.get('/test-bot.php', async (req, res) => {
     try {
