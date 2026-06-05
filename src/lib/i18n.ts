@@ -72,7 +72,7 @@ export const translations = {
     whoWillWin: 'ማን',
     winItAll: 'ያሸንፋል?',
     heroSubtitle: '48 ሀገራት። አንድ ዋንጫ። ቻምፒዮንዎን ይምረጡ እና ውርርዎን ያድርጉ።',
-    placeYourBet: 'ውርርዎን ያድርጉ',
+    placeYourBet: 'ውርርድዎን ያድርጉ',
     finalDate: 'ፍፃሜ · ጁላይ 19, 2026',
     selectNation: 'ሀገር ይምረጡ',
     allContenders: '48 ተወዳዳሪዎች',
