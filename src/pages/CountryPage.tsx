@@ -109,6 +109,19 @@ const CountryPage = () => {
             </div>
 
             <div className="mt-6 space-y-5 sm:mt-8 sm:space-y-6">
+              <div className="rounded-lg border border-gold/30 bg-gradient-to-r from-gold/10 to-transparent p-4 sm:p-6">
+                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-xs sm:tracking-[0.3em]">
+                  {t('potentialPayout')}
+                </p>
+                <p className="font-display mt-2 text-3xl sm:text-5xl">
+                  <span className="block text-base sm:inline sm:text-5xl">{t('bet')} {formatCurrency(amount, language)}</span>
+                  <span className="mx-2 hidden sm:inline">→</span>
+                  <span className="mt-1 block text-gold sm:mt-0 sm:inline">
+                    {t('win')} {formatCurrency(payout, language)}
+                  </span>
+                </p>
+              </div>
+
               <div>
                 <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-xs sm:tracking-[0.3em]">
                   {t('yourBet')}
@@ -120,14 +133,6 @@ const CountryPage = () => {
                   {language === 'am' ? 'ውርርዎ 100 ብር ተስተካክሏል' : 'Bet amount fixed at 100 Birr'}
                 </p>
               </div>
-
-              <div className="rounded-lg border border-gold/30 bg-gradient-to-r from-gold/10 to-transparent p-4 sm:p-6">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-xs sm:tracking-[0.3em]">
-                  {t('potentialPayout')}
-                </p>
-                <p className="font-display mt-2 text-3xl sm:text-5xl">
-                  <span className="block text-base sm:inline sm:text-5xl">{t('bet')} {formatCurrency(amount, language)}</span>
-                  <span className="mx-2 hidden sm:inline">→</span>
                   <span className="mt-1 block text-gold sm:mt-0 sm:inline">
                     {t('win')} {formatCurrency(payout, language)}
                   </span>
