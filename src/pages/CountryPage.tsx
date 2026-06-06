@@ -141,7 +141,7 @@ const CountryPage = () => {
                   <span className="font-display text-3xl text-foreground sm:text-4xl">{formatCurrency(amount, language)}</span>
                 </div>
                 <p className="mt-2 text-center font-mono text-xs text-muted-foreground">
-                  {language === 'am' ? 'ውርርዎ 100 ብር ተስተካክሏል' : 'Bet amount fixed at 100 Birr'}
+                  {language === 'am' ? '' : 'Bet amount fixed at 100 Birr'}
                 </p>
               </div>
 
