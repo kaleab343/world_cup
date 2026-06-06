@@ -376,7 +376,7 @@ const PaymentPage = () => {
                   <MessageCircle className="mx-auto h-12 w-12 text-gold mb-4" />
                   <p className="font-editorial text-base text-muted-foreground leading-relaxed">
                     {language === 'am' 
-                      ? 'ክፍያዎ በማረጋገጫ ላይ ነው። የድጋፍ ቡድናችን በቅርቡ በቴሌግራም ያነጋግርዎታል።'
+                      ? 'ክፍያዎ በማረጋገጫ ላይ ነው። የድጋፍ ቡድናችን በ Telegram የማረጋገጫ መልክት ይልካል። መልካም እድል!'
                       : 'Your payment is being verified. Our support team will contact you soon via Telegram.'}
                   </p>
                 </div>
