@@ -38,3 +38,6 @@ coverage/
 
 # Vercel
 .vercel
+
+# Runtime: users who've received the bot welcome (ephemeral, never commit)
+backend/welcomed-users.json

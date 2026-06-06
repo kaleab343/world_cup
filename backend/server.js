@@ -48,6 +48,26 @@ const WELCOME_TEXT = `🏆 Welcome to World Cup 2026 Bet! 🏆
 
 ለመጀመር ዝግጁ ነዎት? አሁኑኑ ይወራረዱ፣ ያሸንፉ! 🚀`;
 
+// Track which users have already received the welcome, so it's sent only on the
+// FIRST /start. Persisted to a JSON file (best-effort; the host filesystem is
+// ephemeral, so a redeploy can reset it — fine for avoiding repeat-spam).
+const WELCOMED_FILE = path.join(__dirname, 'welcomed-users.json');
+const welcomedUsers = (() => {
+    try {
+        return new Set(JSON.parse(fs.readFileSync(WELCOMED_FILE, 'utf8')));
+    } catch {
+        return new Set();
+    }
+})();
+function markWelcomed(chatId) {
+    welcomedUsers.add(String(chatId));
+    try {
+        fs.writeFileSync(WELCOMED_FILE, JSON.stringify([...welcomedUsers]));
+    } catch (e) {
+        console.error('Could not persist welcomed users:', e);
+    }
+}
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -261,7 +281,13 @@ app.post('/bot-webhook.php', express.json(), async (req, res) => {
             const userName = message.from.first_name || 'User';
             
             if (text === '/start') {
-                await sendWelcome(chatId);
+                // Welcome image+text only on the user's first /start; menu afterwards.
+                if (!welcomedUsers.has(String(chatId))) {
+                    await sendWelcome(chatId);
+                    markWelcomed(chatId);
+                } else {
+                    await sendBetMenu(chatId, userName);
+                }
             } else if (text === '⚽ Place Bet' || text === '/bet') {
                 await sendBetMenu(chatId, userName);
             } else if (text === '📊 My Bets' || text === '/mybets') {
