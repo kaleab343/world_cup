@@ -118,11 +118,6 @@ const PaymentPage = () => {
     }
   };
 
-  const handleCloseQR = () => {
-    setShowQRModal(false);
-    // Stay on payment page instead of navigating away
-  };
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
       {/* Language Toggle */}
@@ -165,7 +160,7 @@ const PaymentPage = () => {
           </h1>
           <p className="mt-3 font-editorial text-muted-foreground">
             {language === 'am' 
-              ? 'ውርርዎን ለማጠናቀቅ በቴሌብር ይክፈሉ'
+              ? 'ውርርድዎን ለማጠናቀቅ በቴሌብር ይክፈሉ'
               : 'Complete your bet payment via TeleBirr'}
           </p>
         </motion.div>
@@ -181,7 +176,7 @@ const PaymentPage = () => {
             <h2 className="font-display text-2xl text-gold">{bet.countryName}</h2>
             <div className="mt-4 flex items-center justify-between">
               <span className="font-mono text-sm text-muted-foreground">
-                {language === 'am' ? 'የክፍያ መጠን' : 'Amount to Pay'}
+                {language === 'am' ? 'ውርርድ መጠን' : 'Amount to Pay'}
               </span>
               <span className="font-display text-4xl text-gold">{formatCurrency(bet.amount, language)}</span>
             </div>
@@ -204,9 +199,9 @@ const PaymentPage = () => {
                   : '2. Select Send Money'}
               </p>
               <p className="font-editorial text-sm text-muted-foreground">
-                {language === 'am' 
-                  ? '3. ይህንን ቁጥር ይጠቀሙ:'
-                  : '3. Use this number:'}
+                {language === 'am'
+                  ? `3. ይህንን ቁጥር በመጠቀም ${formatCurrency(bet.amount, language)} ይላኩ:`
+                  : `3. Send ${formatCurrency(bet.amount, language)} to this number:`}
               </p>
               
               <div className="flex items-center gap-2">
@@ -224,9 +219,9 @@ const PaymentPage = () => {
               </div>
 
               <p className="font-editorial text-sm text-muted-foreground">
-                {language === 'am' 
-                  ? `4. ${formatCurrency(bet.amount, language)} ይላኩ`
-                  : `4. Send ${formatCurrency(bet.amount, language)}`}
+                {language === 'am'
+                  ? '4. ክፍያዎን ለማረጋገጥ ከታች ያለውን የክፍያ ስክሪንሾት ይላኩ።'
+                  : '4. To confirm your payment, send the payment screenshot below.'}
               </p>
             </div>
           </div>
