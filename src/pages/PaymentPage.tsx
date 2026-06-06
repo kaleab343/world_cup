@@ -12,7 +12,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { getTranslation, formatCurrency } from "@/lib/i18n";
 
 const TELEBIRR_NUMBER = "+251912345678"; // Replace with actual TeleBirr number
-const TELEGRAM_SUPPORT = "https://t.me/worldcup2026support"; // Replace with actual Telegram group
+const TELEGRAM_SUPPORT = "https://t.me/World_cup_support"; // Support group
 const API_ENDPOINT = (import.meta.env.VITE_API_ENDPOINT || "https://worldcup-backend-r8kf.onrender.com") + "/submit-payment.php";
 
 console.log('API_ENDPOINT:', API_ENDPOINT); // Debug log
@@ -115,6 +115,17 @@ const PaymentPage = () => {
         description: error.message || (language === 'am' ? 'ክፍያ መላክ አልተቻለም' : 'Failed to submit payment'),
         variant: "destructive",
       });
+    }
+  };
+
+  // Open the support group. Inside Telegram, openTelegramLink opens the group AND
+  // closes the mini app; in a normal browser we fall back to a new tab.
+  const openSupport = () => {
+    const tg = (window as any).Telegram?.WebApp;
+    if (tg?.openTelegramLink) {
+      tg.openTelegramLink(TELEGRAM_SUPPORT);
+    } else {
+      window.open(TELEGRAM_SUPPORT, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -304,13 +315,11 @@ const PaymentPage = () => {
                 : 'Join our Telegram support group'}
             </p>
             <Button
-              asChild
               variant="outline"
               className="mt-4"
+              onClick={openSupport}
             >
-              <a href={TELEGRAM_SUPPORT} target="_blank" rel="noopener noreferrer">
-                {language === 'am' ? 'ቴሌግራም ድጋፍ' : 'Telegram Support'}
-              </a>
+              {language === 'am' ? 'ቴሌግራም ድጋፍ' : 'Telegram Support'}
             </Button>
           </div>
         </motion.div>
