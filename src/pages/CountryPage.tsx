@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Trophy, Users, Languages } from "lucide-react";
@@ -15,6 +15,15 @@ const CountryPage = () => {
   const { language, setLanguage } = useLanguage();
   const t = (key: any) => getTranslation(language, key);
   const amount = 100; // Fixed at 100 Birr
+
+  // On open, scroll down to the betting panel (potential payout) instead of the title
+  const betPanelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      betPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [code]);
 
   if (!country) return <Navigate to="/" replace />;
 
@@ -96,10 +105,11 @@ const CountryPage = () => {
         <div className="mt-8 grid gap-6 sm:mt-14 sm:gap-8 lg:grid-cols-[1.2fr_1fr]">
           {/* Betting panel */}
           <motion.div
+            ref={betPanelRef}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="rounded-xl border border-border/70 bg-card/80 p-4 backdrop-blur-xl sm:p-8"
+            className="scroll-mt-4 rounded-xl border border-border/70 bg-card/80 p-4 backdrop-blur-xl sm:p-8"
           >
             <div className="flex items-baseline justify-between border-b border-border/60 pb-4 sm:pb-6">
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-xs sm:tracking-[0.3em]">
