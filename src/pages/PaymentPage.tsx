@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getTranslation, formatCurrency } from "@/lib/i18n";
 
-const TELEBIRR_NUMBER = "+251912345678"; // Replace with actual TeleBirr number
+const TELEBIRR_NUMBER = "+251983969299"; // TeleBirr number users send payment to
 const TELEGRAM_SUPPORT = "https://t.me/World_cup_support"; // Support group
 const API_ENDPOINT = (import.meta.env.VITE_API_ENDPOINT || "https://worldcup-backend-r8kf.onrender.com") + "/submit-payment.php";
 

@@ -13,7 +13,7 @@ export const translations = {
     allContenders: 'All 48 contenders',
     teams: 'teams',
     betOn: 'Bet on',
-    footer: 'Demo platform · For entertainment only · 18+',
+    footer: 'For entertainment only · 18+',
     
     // CountryPage
     backToCountries: 'Back',
