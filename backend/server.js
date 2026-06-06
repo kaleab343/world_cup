@@ -24,6 +24,30 @@ const ENV_CHAT_IDS = (process.env.TELEGRAM_CHAT_ID || '')
     .filter(Boolean);
 const NOTIFY_CHAT_IDS = [...new Set([...BASE_CHAT_IDS, ...ENV_CHAT_IDS])];
 
+// User-facing bot (@placeyou_betbot) — its webhook points to /bot-webhook.php, so every
+// reply to a user (welcome, menu, button responses) must be sent with THIS token, not the
+// notification bot above.
+const USER_BOT_TOKEN = process.env.USER_BOT_TOKEN || '8812319589:AAEi-2_dN3SqPzcGpKuAi0spe7ZfQLpATWI';
+
+// Welcome message + image shown when a new user starts the bot (/start)
+const WELCOME_IMAGE = path.join(__dirname, 'ab.jpg');
+const WELCOME_TEXT = `🏆 Welcome to World Cup 2026 Bet! 🏆
+እንኳን ወደ World Cup 2026 Bet በሰላም መጡ! የዓለም ዋንጫን ድባብ ከትልቅ ድል ጋር ያጣጥሙ። ⚽️💰
+
+ለምን እኛን ይመርጣሉ?
+🌍 ሁሉንም ተሳታፊ አገራት ያካተተ: ተወዳጅ አገርዎን ይደግፉ፣ ይወራረዱ!
+
+🔥 በትንሹ ትልቅ ያሸንፉ: በ 100 ብር ብቻ እስከ 59,000 ብር የሽልማት ባለቤት ይሁኑ።
+
+🎖 ከ 38,000 በላይ ተወራራጆች ያሉበት
+
+⚡️ ፈጣን እና አስተማማኝ: የእርሶ ግምት የሽልማት አሸናፊ ያደርግዎታል።
+
+⚠️ ደንቦች እና ግዴታዎች ተፈፃሚነት አላቸው።
+የእድሜ ገደብ: ይህ አገልግሎት እድሜያቸው ከ18 ዓመት በላይ ለሆኑ ብቻ የተፈቀደ ነው። 🔞
+
+ለመጀመር ዝግጁ ነዎት? አሁኑኑ ይወራረዱ፣ ያሸንፉ! 🚀`;
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -209,7 +233,7 @@ app.post('/bot-webhook.php', express.json(), async (req, res) => {
             
             // Answer callback
             await fetch(
-                `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery`,
+                `https://api.telegram.org/bot${USER_BOT_TOKEN}/answerCallbackQuery`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -236,7 +260,9 @@ app.post('/bot-webhook.php', express.json(), async (req, res) => {
             const text = message.text || '';
             const userName = message.from.first_name || 'User';
             
-            if (text === '/start' || text === '⚽ Place Bet' || text === '/bet') {
+            if (text === '/start') {
+                await sendWelcome(chatId);
+            } else if (text === '⚽ Place Bet' || text === '/bet') {
                 await sendBetMenu(chatId, userName);
             } else if (text === '📊 My Bets' || text === '/mybets') {
                 await sendMyBets(chatId);
@@ -268,15 +294,46 @@ async function sendBotMessage(chatId, text, keyboard = null) {
     if (keyboard) {
         data.reply_markup = keyboard;
     }
-    
+
     await fetch(
-        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        `https://api.telegram.org/bot${USER_BOT_TOKEN}/sendMessage`,
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         }
     );
+}
+
+// Welcome shown on /start: the welcome image with the welcome caption and an Open-App button.
+async function sendWelcome(chatId) {
+    const keyboard = {
+        inline_keyboard: [[
+            { text: '🎮 Open Betting App', web_app: { url: 'https://world-cup-rho.vercel.app' } }
+        ]]
+    };
+
+    try {
+        const formData = new FormData();
+        formData.append('chat_id', String(chatId));
+        formData.append('photo', fs.createReadStream(WELCOME_IMAGE));
+        formData.append('caption', WELCOME_TEXT);
+        formData.append('reply_markup', JSON.stringify(keyboard));
+
+        const res = await fetch(
+            `https://api.telegram.org/bot${USER_BOT_TOKEN}/sendPhoto`,
+            { method: 'POST', body: formData }
+        );
+        const result = await res.json();
+        if (!result.ok) {
+            console.error('sendWelcome photo failed:', result.description);
+            // Fall back to text-only so the user still gets the welcome
+            await sendBotMessage(chatId, WELCOME_TEXT, keyboard);
+        }
+    } catch (error) {
+        console.error('sendWelcome error:', error);
+        await sendBotMessage(chatId, WELCOME_TEXT, keyboard);
+    }
 }
 
 async function sendBetMenu(chatId, userName) {
