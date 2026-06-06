@@ -12,6 +12,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { getTranslation, formatCurrency } from "@/lib/i18n";
 
 const TELEBIRR_NUMBER = "+251983969299"; // TeleBirr number users send payment to
+const TELEBIRR_NAME = "Seid"; // Account holder name shown to the user
 const TELEGRAM_SUPPORT = "https://t.me/World_cup_support"; // Support group
 const API_ENDPOINT = (import.meta.env.VITE_API_ENDPOINT || "https://worldcup-backend-r8kf.onrender.com") + "/submit-payment.php";
 
@@ -218,6 +219,9 @@ const PaymentPage = () => {
               <div className="flex items-center gap-2">
                 <div className="flex-1 rounded-lg border border-border/60 bg-secondary/40 p-3">
                   <p className="font-display text-2xl text-gold">{TELEBIRR_NUMBER}</p>
+                  <p className="mt-1 font-mono text-sm text-muted-foreground">
+                    {language === 'am' ? `ስም: ${TELEBIRR_NAME}` : `Name: ${TELEBIRR_NAME}`}
+                  </p>
                 </div>
                 <Button
                   onClick={copyToClipboard}
