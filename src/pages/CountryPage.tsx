@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, TrendingUp, Trophy, Users, Languages } from "lucide-react";
+import { ArrowLeft, Trophy, Users, Languages } from "lucide-react";
 import { getCountry, flagUrl } from "@/data/countries";
 import { placeBet } from "@/lib/bets";
 import { Button } from "@/components/ui/button";
@@ -109,33 +109,29 @@ const CountryPage = () => {
             </div>
 
             <div className="mt-6 space-y-5 sm:mt-8 sm:space-y-6">
-              <div className="rounded-lg border border-gold/30 bg-gradient-to-r from-gold/10 to-transparent p-4 sm:p-6">
+              {/* HERO: potential payout (the win amount is the focus) */}
+              <div className="rounded-lg border border-gold/40 bg-gradient-to-r from-gold/15 to-transparent p-6 text-center shadow-glow sm:p-8">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-xs sm:tracking-[0.3em]">
                   {t('potentialPayout')}
                 </p>
-                <p className="font-display mt-2 text-3xl sm:text-5xl">
-                  <span className="block text-base sm:inline sm:text-5xl">{t('bet')} {formatCurrency(amount, language)}</span>
-                  <span className="mx-2 hidden sm:inline">→</span>
-                  <span className="mt-1 block text-gold sm:mt-0 sm:inline">
-                    {t('win')} {formatCurrency(payout, language)}
-                  </span>
+                <p className="font-display mt-3 text-5xl leading-none text-gold sm:text-7xl">
+                  {formatCurrency(payout, language)}
+                </p>
+                <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-gold/70 sm:text-xs sm:tracking-[0.3em]">
+                  {t('win')}
                 </p>
               </div>
 
+              {/* Secondary: fixed bet amount */}
               <div>
                 <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:text-xs sm:tracking-[0.3em]">
                   {t('yourBet')}
                 </label>
-                <div className="mt-3 flex items-center justify-center gap-3 rounded-lg border border-gold/30 bg-gradient-to-r from-gold/10 to-transparent p-6 sm:gap-4">
-                  <span className="font-display text-5xl text-gold sm:text-6xl">{formatCurrency(amount, language)}</span>
+                <div className="mt-3 flex items-center justify-center gap-3 rounded-lg border border-border/60 bg-card/40 p-4 sm:gap-4">
+                  <span className="font-display text-3xl text-foreground sm:text-4xl">{formatCurrency(amount, language)}</span>
                 </div>
-                <p className="mt-3 text-center font-mono text-xs text-muted-foreground">
+                <p className="mt-2 text-center font-mono text-xs text-muted-foreground">
                   {language === 'am' ? 'ውርርዎ 100 ብር ተስተካክሏል' : 'Bet amount fixed at 100 Birr'}
-                </p>
-              </div>
-                  <span className="mt-1 block text-gold sm:mt-0 sm:inline">
-                    {t('win')} {formatCurrency(payout, language)}
-                  </span>
                 </p>
               </div>
 
@@ -160,11 +156,6 @@ const CountryPage = () => {
               icon={<Trophy className="h-4 w-4 sm:h-5 sm:w-5" />}
               label={t('worldCupWins')}
               value={country.worldCupWins.toString()}
-            />
-            <StatCard
-              icon={<TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />}
-              label={t('winProbability')}
-              value={`${country.winProbability}%`}
             />
             <div className="rounded-xl border border-border/70 bg-card/80 p-4 backdrop-blur-xl sm:p-6">
               <div className="flex items-center gap-2 text-gold sm:gap-3">
