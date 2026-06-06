@@ -64,7 +64,7 @@ export const translations = {
     
     // Currency
     currency: 'ETB',
-    currencySymbol: 'Br',
+    currencySymbol: 'Birr',
   },
   am: {
     // HomePage
@@ -94,7 +94,7 @@ export const translations = {
     groupOpponents: 'የቡድን ደረጃ ተቀናቃኞች',
     
     // ConfirmationPage
-    betConfirmed: 'ውርር ተረጋግጧል',
+    betConfirmed: 'ውርርድ ተረጋግጧል',
     betPlaced: 'ውርርዎ ተቀምጧል። አሁን ተቀምጠው ድንቅ ነገሩን ይመልከቱ።',
     stake: 'ውርርድ',
     odds: 'እድል',
@@ -110,7 +110,7 @@ export const translations = {
     betsPlaced: 'ለዓለም ዋንጫ 2026 የተደረጉ ውርሮች',
     betSingular: 'ውርርድ',
     betsPlural: 'ውርሮች',
-    noBetsYet: 'ገና ምንም ውርር የለም።',
+    noBetsYet: 'ገና ምንም ውርርድ የለም።',
     placeFirstBet: 'የመጀመሪያ ውርርዎን ያድርጉ',
     stakeWin: 'ውርርድ → አሸናፊ',
     cashOut: 'ገንዘብ ውጣ',
@@ -139,5 +139,6 @@ export const getTranslation = (lang: Language, key: keyof typeof translations.en
 
 export const formatCurrency = (amount: number, lang: Language): string => {
   const symbol = translations[lang].currencySymbol;
-  return `${symbol}${amount.toLocaleString()}`;
+  // Amount first, then the currency word (e.g. "100 Birr" / "100 ብር")
+  return `${amount.toLocaleString()} ${symbol}`;
 };
