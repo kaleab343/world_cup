@@ -220,7 +220,7 @@ const PaymentPage = () => {
 
               <p className="font-editorial text-sm text-muted-foreground">
                 {language === 'am'
-                  ? '4. ክፍያዎን ለማረጋገጥ ከታች ያለውን የክፍያ ስክሪንሾት ይላኩ።'
+                  ? '4. ክፍያዎን ለማረጋገጥ ከታች ያለውን የክፍያ ስክሪንሾት (screenshot) ይላኩ።'
                   : '4. To confirm your payment, send the payment screenshot below.'}
               </p>
             </div>
