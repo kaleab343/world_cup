@@ -84,7 +84,7 @@ export const translations = {
     backToCountries: 'ተመለስ',
     group: 'ቡድን',
     oddsToWin: 'የማሸነፍ እድል',
-    yourBet: 'ውርርድዎን (ብር)',
+    yourBet: 'ውርርድዎ (ብር)',
     potentialPayout: 'የሚያገኙት ገንዘብ',
     bet: 'ውርርድ',
     win: 'ያሸንፋሉ',
